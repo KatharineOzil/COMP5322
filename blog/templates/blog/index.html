@@ -1,0 +1,56 @@
+{% extends 'blog/base.html' %}
+    {% block content %}
+
+    <div>
+        {% if result %}
+        <script>var cnt = 1;</script>
+        {% for content in result %}
+                <script>
+                if (cnt%7 == 1) {
+                    document.write('<div class="mdl-grid mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-card mdl-shadow--4dp">);
+                    document.write('    <div class="mdl-card__media mdl-cell mdl-cell--12-col-tablet">');
+                } else if (cnt%7 == 2) {
+                    document.write('<div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-card mdl-shadow--4dp">');
+                    document.write('    <div class="mdl-card__title">');
+                } else if (cnt%7 == 3 || cnt%7 == 4 || cnt%7 == 5) {
+                    document.write('<div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet mdl-card mdl-shadow--4dp">');
+                    document.write('<div class="mdl-card__media">');
+                } else if (cnt%7 == 6) {
+                    document.write('<div class="mdl-cell mdl-cell--5-col mdl-cell--4-col-tablet mdl-card  mdl-card mdl-shadow--4dp">');
+                    document.write('<div class="mdl-card__title mdl-card--expand portfolio-blog-card-strip-bg mdl-color-text--white">');
+                } else {
+                    document.write('<div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-card  mdl-card mdl-shadow--4dp portfolio-blog-card-compact">);
+                    document.write('<div class="mdl-card__media">');
+                }
+                </script>
+                    <a href="{% url "detail" id=content.id %}"><img class="article-image" src="{{content.cover}}" border="0" alt=""></a>
+                </div>            
+                <script>
+                if (cnt%7 == 1) document.write('<div class="mdl-cell mdl-cell--8-col">');
+                else if (cnt%7 == 2) document.write('<div class="mdl-card__title">');
+                else if (cnt%7 == 3 || cnt%7 == 4 || cnt%7 == 5) document.write('<div class="mdl-card__supporting-text">');
+                else if (cnt%7 == 6) document.write('<div class="mdl-card__title mdl-card--expand portfolio-blog-card-strip-bg mdl-color-text--white">');
+                else document.write('<div class="mdl-card__title">');
+                </script>                          
+                    <a href="{% url "detail" id=content.id %}">
+                        <h2 class="mdl-card__title-text">{{content.title}}</h2>
+                    </a>
+                    <script>
+                        if (cnt%7 == 1) document.write('<div class="mdl-card__supporting-text padding-top">');
+                        else if (cnt%7 == 2) document.write('<div class="mdl-card__supporting-text no-bottom-padding">');
+                        else document.write('<div class="mdl-card__supporting-text">');
+                        cnt++;
+                    </script>                               
+                        <span>{{content.author}} {{content.created_time}}</span>
+                        <span>Category: {{ content.category }}</span>
+                    </div>
+                </div>           
+        {% endfor %}
+        {% else %}
+        <div>No Articles!</div>
+        {% endif %}
+</div>
+
+
+
+    {% endblock %}

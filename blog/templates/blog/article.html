@@ -1,0 +1,48 @@
+{% extends 'blog/base.html' %}
+    {% block content %}
+
+<br>
+<div class='header'>
+	<h1>{{ post.title }}</h1>
+	<h3>{{ post.category }}, Posted at {{ post.created_time }}</h3>
+
+</div>
+
+<div>
+	{{ post.content }}
+</div>
+
+<div>
+	{% for comment in comments %}
+
+	{{ comment.auther }}
+	{{ comment.content }}
+	
+	{% endfor %}
+</div>
+
+<div>
+	<form action="{% url 'detail' id=post.id %}" method="post" class="" id="tf">
+    {% csrf_token %}
+    {{ form }}
+    <br>
+     <div class="am-cf" id="fp">
+      <input type="button" value="Comment" id="fp_result" class="" onclick="submit_comment"/>   
+     </div>
+	</form>
+</div>
+<script>
+function submit_comment() {
+    $('#btn_comment').popover('close');
+    $("#comment_form").ajaxSubmit({
+        success: function (result) {
+            eval("var result = " + result);
+            console.log(result.message);
+            $('#btn_comment').popover('setContent', result.message);
+            $('#btn_comment').popover('open');
+        }
+    });
+    return false;
+}
+</script>
+    {% endblock %}

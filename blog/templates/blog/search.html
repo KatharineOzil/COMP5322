@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+    {% block content %}
+
+<div>
+	<h1>Search Result</h1>
+</div>
+
+<div>
+	<table>
+		<thead>
+			<tr>
+				<th>Title</th>
+			</tr>
+		</thead>
+		 <tbody>
+	  		{% if result %}
+			   {% for search in result %}
+        	<tr>
+            	<td><a href="{% url "detail" id='search.id' %}">{{search.title}}</td>
+        	</tr>
+      		{% endfor %}
+      		{% else %}
+        	<tr>
+            	<td>No Result!</td>
+        	</tr>
+      		{% endif %}
+     </tbody>
+	</table>
+</div>
+    {% endblock %}
