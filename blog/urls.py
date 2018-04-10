@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'article/(?P<id>\d+)/$', views.detail, name='detail'),
     url(r'search$', views.search, name='search'),
-    url(r'intro$', views.introduction, name='introduction'),
+    url(r'intro$', views.intro, name='intro'),
     url(r'archives$', views.archives, name='archives'),
     url(r'', include(frontend_urls)),
 ] 

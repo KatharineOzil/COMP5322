@@ -8,6 +8,8 @@ from django.db.models import Q
 
 def index(request):
 	return_result = {}
+	f = SearchForm()
+	return_result.update({'form': f})
 	try:
 		post = Article.objects.all()
 		return_result.update({'result': post})
@@ -56,7 +58,7 @@ def search(request):
 		else:
 			return render(request, 'blog/index.html', {'form': f})
 
-def introduction(request):
+def intro(request):
 	try:
 		users = User.objects.all()
 	except User.DoesNotExist:

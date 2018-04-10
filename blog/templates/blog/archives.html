@@ -1,27 +1,38 @@
 {% extends 'blog/base.html' %}
+{% load staticfiles %}
     {% block content %}
 
-<div>
-	<h1>Articles</h1>
-</div>
-
-<div>
-	{% if a %}
-
-	{% for k,v in a.items %}
-		<div>{% if v %}</div>
-		{{ k }}
-		{% for i in v %}
-		<div>
-		<a href="{% url "detail" id=i.id %}">{{i.title}}</a>
-		{{ i.author }} | {{ i.created_time }}
+<main class="mdl-layout__content">
+	<div class="mdl-grid portfolio-max-width">
+		<div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Archives</h2>
+        </div>
+        <div class="mdl-card__media">
+            <img class="article-image" src='{% static "/image/aboutus.png" %}' border="0" alt="">
+        </div>
+        <br>
+        {% if a %}
+        <div class="mdl-grid portfolio-copy">
+        	{% for k,v in a.items %}
+        		{% if v %}
+        		<div class="mdl-cell mdl-cell--12-col mdl-typography--headline"><h3>{{ k }}</h3></div>
+        		{% for i in v %}
+            <h4 class="mdl-cell mdl-cell--12-col mdl-typography--headline">	
+            	<a href="{% url "detail" id=i.id %}">{{i.title}}</a></h4>
+            <div class="mdl-cell mdl-cell--8-col mdl-card__supporting-text no-padding ">
+            <p>	{{ i.author }} | {{ i.created_time }}</p>
+			</div>
+				{% endfor %}
+				{% endif %}
+				{% endfor %}
+		{% else %}
+		<h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">	
+            	No Article!</h3>
 		</div>
-		{% endfor %}
-		{% endif %}
-	{% endfor %}
-	{% else %}
-	<div>No Result!</div>
-	{% endif %}
+    	{% endif %}
 </div>
+</div>
+</main>
 
     {% endblock %}

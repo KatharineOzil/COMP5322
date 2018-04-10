@@ -1,7 +1,11 @@
 {% extends 'blog/base.html' %}
+{% load staticfiles %}
     {% block content %}
 
-    <div>
+<main class="mdl-layout__content">
+    <div class="mdl-grid portfolio-max-width">
+    <div class="mdl-grid mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-card mdl-shadow--4dp">
+        <div>
         {% if result %}
         <script>var cnt = 1;</script>
         {% for content in result %}
@@ -24,7 +28,7 @@
                 }
                 </script>
                     <a href="{% url "detail" id=content.id %}"><img class="article-image" src="{{content.cover}}" border="0" alt=""></a>
-                </div>            
+        </div>            
                 <script>
                 if (cnt%7 == 1) document.write('<div class="mdl-cell mdl-cell--8-col">');
                 else if (cnt%7 == 2) document.write('<div class="mdl-card__title">');
@@ -43,14 +47,28 @@
                     </script>                               
                         <span>{{content.author}} {{content.created_time}}</span>
                         <span>Category: {{ content.category }}</span>
-                    </div>
-                </div>           
+         
         {% endfor %}
         {% else %}
         <div>No Articles!</div>
         {% endif %}
+    </div>
 </div>
+</main>
 
-
+    <div id='search'>
+      {% if form.subject.errors %}
+      <ol>
+        {% for error in form.subject.errors %}
+          <li><strong>{{ error|escape }}</strong></li>
+        {% endfor %}
+      </ol>
+      {% endif %}
+      <form action="{% url 'search' %}" method="post">
+        {% csrf_token %}
+        {{ form }}  
+        <input type="submit" value="search" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"/>
+      </form>
+    </div>
 
     {% endblock %}
