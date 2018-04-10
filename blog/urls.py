@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'intro$', views.intro, name='intro'),
     url(r'archives$', views.archives, name='archives'),
     url(r'', include(frontend_urls)),
+    url(r'admin/', include(admin.site.urls)),
 ] 

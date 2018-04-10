@@ -3,6 +3,7 @@ from .models import Article, Comment, Category, User
 from .forms import CommentForm, SearchForm
 from itertools import chain
 from django.db.models import Q
+from django.http import Http404
 
 # Create your views here.
 
@@ -21,24 +22,27 @@ def detail(request, id):
 	try:
 		post = Article.objects.get(id=id)
 		if post.visible == True:
-			comments = Comment.objects.filter(article=id, status=True)
+			comments = Comment.objects.filter(article_id=id, status=True)
 			if request.method == 'GET':
 				f = CommentForm()
-				return render(request, 'blog/article.html', {'form': f, 'post': post})
+				print comments
+				return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments})
 			elif request.method == 'POST':
 				f = CommentForm(request.POST)
 				if f.is_valid():
 					author = f.cleaned_data['author']
 					content = f.cleaned_data['content']
-					Comment.objects.create(content=content, author=author)
-					#return render(request, 'blog/article.html', {'message': 'Comment Successfully', 'form': f})
+					email = f.cleaned_data['email']
+					Comment.objects.create(content=content, author=author, article_id=id, email=email)
+					f = CommentForm()
+					return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments})
 			else:
 				f = CommentForm()
-				return render(request, 'blog/article.html', {'form': f, 'error': error, 'post': post})
+				return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments})
 		else:
-			raise Http404
+			raise Http404("Article does not exist")
 	except Article.DoesNotExist:
-		raise Http404
+		raise Http404("Article does not exist")
 
 	return render(request, 'blog/article.html', {'post': post, 'comments': comments, 'form': f})
 
@@ -53,7 +57,7 @@ def search(request):
 		if f.is_valid():
 			search = f.cleaned_data['search']
 			return_article = Article.objects.filter( Q(title__contains=search) | Q(content__contains=search))
-			return_result.update({'form': f, 'result': result_article})
+			return_result.update({'form': f, 'result': return_article})
 			return render(request, 'blog/search.html',return_result)
 		else:
 			return render(request, 'blog/index.html', {'form': f})
@@ -62,7 +66,7 @@ def intro(request):
 	try:
 		users = User.objects.all()
 	except User.DoesNotExist:
-		raise Http404
+		raise Http404("User does not exist!")
 	return render(request, 'blog/intro.html', {'users': users})
 
 def archives(request):
@@ -74,6 +78,5 @@ def archives(request):
 	for c in articles:
 		a[c.category.category].append(c)
 		
-	print a
 	return render(request, 'blog/archives.html', {'a': a})
 

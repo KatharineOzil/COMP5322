@@ -5,6 +5,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
+
 # Create your models here.
 
 class Category(models.Model):
@@ -29,8 +30,9 @@ class Article(models.Model):
 class Comment(models.Model):
 	content = models.CharField(max_length=2000)
 	author = models.CharField(max_length=100)
+	email = models.EmailField(blank=True)
 	created_time = models.DateTimeField(default=timezone.now)
-	status = models.BooleanField(default=False)
+	status = models.BooleanField(default=True)
 	article = models.ForeignKey(Article, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -40,7 +42,8 @@ class User(AbstractUser):
     intro = models.TextField(blank=True, default='-')
 
 class feedback(models.Model):
-	from_id = models.ForeignKey(User, on_delete=models.CASCADE)
+	from_id = models.CharField(max_length=100)
 	to_id = models.ForeignKey(Comment, on_delete=models.CASCADE)
 	content = models.CharField(max_length=2000)
 	created_time = models.DateTimeField(default=timezone.now)
+	status = models.BooleanField(default=False)

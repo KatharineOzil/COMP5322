@@ -3,55 +3,69 @@
     {% block content %}
 
 <main class="mdl-layout__content">
-    <div class="mdl-grid portfolio-max-width">
+    <div class="mdl-grid portfolio-max-width portfolio-contact">
         <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+
         <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">{{ post.title }}</h2>
-        </div>
+            <h2 class="mdl-cell mdl-cell--12-col mdl-typography--headline">{{ post.title }}</h2>
+       
+
             <div class="mdl-cell mdl-cell--8-col mdl-card__supporting-text no-padding ">
-            <p>{{ post.category }}, Posted at {{ post.created_time }}</p>
+            <p>{{ post.author}} Posted at {{ post.created_time }}  Category: {{ post.category }} </p>
             </div>
+        </div>
 
+        <div class="mdl-card__media">
+            <img class="article-image" src='/{{ post.cover }}' border="0" alt="">
+        </div>
 
-        <div class="mdl-cell mdl-cell--8-col mdl-card__supporting-text no-padding ">
+        <div class="mdl-card__supporting-text">
 	       {{ post.content }}
         </div>
 
-<div>
-	{% for comment in comments %}
 
-	{{ comment.auther }}
-	{{ comment.content }}
-	
-	{% endfor %}
-</div>
 
-<div>
-	<form action="{% url 'detail' id=post.id %}" method="post" class="" id="tf">
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded">
+    <div class="mdl-grid portfolio-copy">
+    <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Comment</h3>
+        {% if comments %}
+        {% for comment in comments %}
+        <div class="mdl-cell mdl-cell--12-col mdl-card__supporting-text no-padding ">
+        <h4>{{comment.id}}: {{ comment.content }}</h4>
+        <p>Posted by <U><strong>{{ comment.author }}</strong></U> at {{comment.created_time}}</p>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="mdl-cell mdl-cell--12-col mdl-card__supporting-text no-padding ">
+        <p>No Comment!</p>
+        </div>
+        {% endif %}
+
+    <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Add Comment</h3>
+
+    <div class="mdl-card__supporting-text">
+
+
+	<form action="." method="post">
     {% csrf_token %}
-    {{ form }}
-    <br>
-     <div class="am-cf" id="fp">
-      <input type="button" value="Comment" id="fp_result" class="" onclick="submit_comment()"/>   
-     </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="id_{{ form.author.name }}" name="{{ form.author.name }}" value="{% if form.author.value != None %}{{ form.author.value }}{% endif %}">
+        <label class="mdl-textfield__label" for="id_{{ form.author.name }}">Name</label>
     </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="id_{{ form.email.name }}" name="{{ form.email.name }}" value="{% if form.email.value != None %}{{ form.email.value }}{% endif %}" >
+        <label class="mdl-textfield__label" for="id_{{ form.email.name }}">Email</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" rows="5" id="id_{{ form.content.name }}" name="{{ form.content.name }}" value="{% if form.content.value != None %}{{ form.content.value }}{% endif %}">
+        <label class="mdl-textfield__label" for="id_{{ form.content.name }}">Comment</label>
+    </div>
+    <center>
+        <input type="submit" value="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />   
+    </center>
 	</form>
-</div>
-<script>
-function submit_comment() {
-    $('#btn_comment').popover('close');
-    $("#comment_form").ajaxSubmit({
-        success: function (result) {
-            eval("var result = " + result);
-            console.log(result.message);
-            $('#btn_comment').popover('setContent', result.message);
-            $('#btn_comment').popover('open');
-        }
-    });
-    return false;
-}
-</script>
+    </div>
+    </div>
+
 
 </div>
 </div>
