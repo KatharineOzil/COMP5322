@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
 
 
 # Create your models here.
@@ -27,23 +29,22 @@ class Article(models.Model):
 	def __str__(self):
 		return self.title
 
-class Comment(models.Model):
+class Comment(MPTTModel):
 	content = models.CharField(max_length=2000)
 	author = models.CharField(max_length=100)
 	email = models.EmailField(blank=True)
 	created_time = models.DateTimeField(default=timezone.now)
+	parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
 	status = models.BooleanField(default=True)
 	article = models.ForeignKey(Article, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.author
 
+	class MPTTMeta:
+		order_insertion_by = ['-created_time']
+		tree_manager_name = 'objects'
+
 class User(AbstractUser):
     intro = models.TextField(blank=True, default='-')
 
-class feedback(models.Model):
-	from_id = models.CharField(max_length=100)
-	to_id = models.ForeignKey(Comment, on_delete=models.CASCADE)
-	content = models.CharField(max_length=2000)
-	created_time = models.DateTimeField(default=timezone.now)
-	status = models.BooleanField(default=False)

@@ -22,7 +22,8 @@ def detail(request, id):
 	try:
 		post = Article.objects.get(id=id)
 		if post.visible == True:
-			comments = Comment.objects.filter(article_id=id, status=True)
+			comments = post.comment_set.all()
+			#comments = Comment.objects.filter(article_id=id, status=True)
 			if request.method == 'GET':
 				f = CommentForm()
 				print comments
@@ -41,6 +42,7 @@ def detail(request, id):
 				return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments})
 		else:
 			raise Http404("Article does not exist")
+
 	except Article.DoesNotExist:
 		raise Http404("Article does not exist")
 

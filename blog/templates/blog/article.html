@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 {% load staticfiles %}
+{% load mptt_tags %}
     {% block content %}
 
 <main class="mdl-layout__content">
@@ -23,8 +24,32 @@
 	       {{ post.content }}
         </div>
 
+    <div class="mdl-grid portfolio-copy">
+    <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Comment</h3>
 
+    {% if comments %}
+    <ul>
+        {% recursetree comments %}
+            <li>
+                <h4>{{node.id}}: {{ node.content }}<input type="submit" value="reply" class="mdl-button mdl-js-button mdl-button--primary">   </h4>                
+                {% if not node.is_leaf_node %}
+                <p>Posted by <U><strong>{{ node.author }}</strong></U> at {{ node.created_time }}</p>
 
+                <ul>
+                {{ children }}
+                <p>Posted by <U><strong>{{ children.author }}</strong></U> at {{children.created_time}}</p>
+                </ul>
+                {% endif %}
+            </li>
+        {% endrecursetree %}
+    </ul>
+    {% else %}
+    <div class="mdl-cell mdl-cell--12-col mdl-card__supporting-text no-padding ">
+    <p>No Comment!</p>
+    </div>
+    {% endif %}
+
+<!--
     <div class="mdl-grid portfolio-copy">
     <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Comment</h3>
         {% if comments %}
@@ -39,7 +64,7 @@
         <p>No Comment!</p>
         </div>
         {% endif %}
-
+-->
     <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Add Comment</h3>
 
     <div class="mdl-card__supporting-text">
