@@ -12,7 +12,7 @@
        
 
             <div class="mdl-cell mdl-cell--8-col mdl-card__supporting-text no-padding ">
-            <p>{{ post.author}} Posted at {{ post.created_time }}  Category: {{ post.category }} </p>
+            <p>{{ post.author}} posted at {{ post.created_time }}  Category: {{ post.category }} </p>
             </div>
         </div>
 
@@ -24,51 +24,56 @@
 	       {{ post.content }}
         </div>
 
-    <div class="mdl-grid portfolio-copy">
+
+
+<div class="mdl-grid portfolio-copy">
     <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Comment</h3>
-
     {% if comments %}
-    <ul>
-        {% recursetree comments %}
-            <li>
-                <h4>{{node.id}}: {{ node.content }}<input type="submit" value="reply" class="mdl-button mdl-js-button mdl-button--primary">   </h4>                
-                {% if not node.is_leaf_node %}
-                <p>Posted by <U><strong>{{ node.author }}</strong></U> at {{ node.created_time }}</p>
+    <div class="mdl-cell mdl-cell--12-col mdl-card__supporting-text no-padding ">
 
+    <ul class="demo-list-icon mdl-list">
+        {% recursetree comments %}
+            <li class="mdl-list__item mdl-list__item--three-line">
+                <span class="mdl-list__item-primary-content">
+                     <i class="material-icons mdl-list__item-avatar">person</i>
+                
+                <span>{{ node.content }}</span>
+                <span class="mdl-list__item-text-body">
+                Posted by <U><strong>{{ node.author }}</strong></U> at {{ node.created_time }}
+                </span>
+                </span>
+
+
+                <span class="mdl-list__item-secondary-content">
+                <button type="button" class="mdl-button mdl-js-button mdl-button--primary" class='reply_c'> 
+                Reply
+                </button>
+                </span>
+                
+                {% if not node.is_leaf_node %}
                 <ul>
                 {{ children }}
-                <p>Posted by <U><strong>{{ children.author }}</strong></U> at {{children.created_time}}</p>
                 </ul>
                 {% endif %}
             </li>
         {% endrecursetree %}
     </ul>
+    </div>
     {% else %}
     <div class="mdl-cell mdl-cell--12-col mdl-card__supporting-text no-padding ">
-    <p>No Comment!</p>
+        <p>No Comment!</p>
     </div>
     {% endif %}
 
-<!--
-    <div class="mdl-grid portfolio-copy">
-    <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Comment</h3>
-        {% if comments %}
-        {% for comment in comments %}
-        <div class="mdl-cell mdl-cell--12-col mdl-card__supporting-text no-padding ">
-        <h4>{{comment.id}}: {{ comment.content }}</h4>
-        <p>Posted by <U><strong>{{ comment.author }}</strong></U> at {{comment.created_time}}</p>
-        </div>
-        {% endfor %}
-        {% else %}
-        <div class="mdl-cell mdl-cell--12-col mdl-card__supporting-text no-padding ">
-        <p>No Comment!</p>
-        </div>
-        {% endif %}
--->
-    <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Add Comment</h3>
 
     <div class="mdl-card__supporting-text">
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add" type="button">
+        Add Comment
+    </button>
+    </div>
 
+    <div class="mdl-card__supporting-text" id='add_comment' style="display:none">
+    <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Add Comment</h3>
 
 	<form action="." method="post">
     {% csrf_token %}
@@ -85,14 +90,59 @@
         <label class="mdl-textfield__label" for="id_{{ form.content.name }}">Comment</label>
     </div>
     <center>
-        <input type="submit" value="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />   
+        <input type="submit" value="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" name='comment'/>   
     </center>
 	</form>
     </div>
+
+
+    <div class="mdl-card__supporting-text" class='reply_comment' style="display:none">
+    <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Reply</h3>
+
+    <form action="." method="post">
+    {% csrf_token %}
+    <input type="text" value="{{ node.id }}" name="replyform.parent.name" hidden>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="id_{{ replyform.author.name }}" name="{{ replyform.author.name }}" value="{% if replyform.author.value != None %}{{ replyform.author.value }}{% endif %}">
+        <label class="mdl-textfield__label" for="id_{{ replyform.author.name }}">Name</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+         <input class="mdl-textfield__input" type="text" id="id_{{ replyform.email.name }}" name="{{ replyform.email.name }}" value="{% if replyform.email.value != None %}{{ replyform.email.value }}{% endif %}" >
+        <label class="mdl-textfield__label" for="id_{{ replyform.email.name }}">Email</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" rows="5" id="id_{{ replyform.content.name }}" name="{{ replyform.content.name }}" value="{% if replyform.content.value != None %}{{ replyform.content.value }}{% endif %}">
+        <label class="mdl-textfield__label" for="id_{{ replyform.content.name }}">Comment</label>
+    </div>
+    <center>
+        <input type="submit" value="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" name='reply'/>   
+    </center>
+    </form>
     </div>
 
+</div>
 
 </div>
 </div>
 </main>
+<script type="text/javascript">
+    $("#add").click(function() {
+        $("#add_comment").show();
+        $("#add").hide();
+    });
+
+    $(".reply_c").click(function() {
+        $(".reply_comment").show();
+        $("#add").hide();
+        $("#add_comment").hide();
+        $(this).children().show();
+
+    });
+
+</script>
+<style>
+.demo-list-three {
+  width: 650px;
+}
+</style>
     {% endblock %}

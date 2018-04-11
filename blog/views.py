@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Article, Comment, Category, User
-from .forms import CommentForm, SearchForm
+from .forms import CommentForm, SearchForm, ReplyForm
 from itertools import chain
 from django.db.models import Q
 from django.http import Http404
@@ -26,20 +26,33 @@ def detail(request, id):
 			#comments = Comment.objects.filter(article_id=id, status=True)
 			if request.method == 'GET':
 				f = CommentForm()
-				print comments
-				return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments})
+				r_f = ReplyForm()
+				return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments, 'replyform': r_f})
 			elif request.method == 'POST':
-				f = CommentForm(request.POST)
-				if f.is_valid():
-					author = f.cleaned_data['author']
-					content = f.cleaned_data['content']
-					email = f.cleaned_data['email']
-					Comment.objects.create(content=content, author=author, article_id=id, email=email)
+				if 'comment' in request.POST:
+					f = CommentForm(request.POST)
+					if f.is_valid():
+						author = f.cleaned_data['author']
+						content = f.cleaned_data['content']
+						email = f.cleaned_data['email']
+						Comment.objects.create(content=content, author=author, article_id=id, email=email)
+						f = CommentForm()
+						return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments, 'replyform': r_f})
+				elif 'reply' in request.POST:
 					f = CommentForm()
-					return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments})
+					r_f = ReplyForm(request.POST)
+					if r_f.is_valid():
+						author = r_f.cleaned_data['author']
+						content = r_f.cleaned_data['content']
+						email = r_f.cleaned_data['email']
+						parent = r_f.cleaned_data['parent']
+						Comment.objects.create(content=content, author=author, article_id=id, parent_id=parent)
+						r_f = ReplyForm()
+						return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments, 'replyform': r_f})
 			else:
 				f = CommentForm()
-				return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments})
+				r_f = ReplyForm()
+				return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments, 'replyform': r_f})
 		else:
 			raise Http404("Article does not exist")
 
