@@ -12,7 +12,7 @@ from mptt.models import MPTTModel
 
 class Category(models.Model):
 	category = models.CharField(max_length=20)
-	cover = models.ImageField(upload_to='blog/static/category_cover/', blank=False, default='default.png')
+	cover = models.ImageField(upload_to='blog/static/category_cover/', blank=False, default='blog/static/category_cover/default.png')
 
 	def __str__(self):
 		return self.category

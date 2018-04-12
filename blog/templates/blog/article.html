@@ -33,7 +33,7 @@
 
     <ul class="demo-list-icon mdl-list">
         {% recursetree comments %}
-            <li class="mdl-list__item mdl-list__item--three-line">
+            <li class="mdl-list__item mdl-list__item--three-line" c_id="{{ node.id }}">
                 <span class="mdl-list__item-primary-content">
                      <i class="material-icons mdl-list__item-avatar">person</i>
                 
@@ -45,7 +45,7 @@
 
 
                 <span class="mdl-list__item-secondary-content">
-                <button type="button" class="mdl-button mdl-js-button mdl-button--primary" class='reply_c'> 
+                <button type="button" class="mdl-button mdl-js-button mdl-button--primary reply_c"> 
                 Reply
                 </button>
                 </span>
@@ -96,12 +96,13 @@
     </div>
 
 
-    <div class="mdl-card__supporting-text" class='reply_comment' style="display:none">
+    <div class="mdl-card__supporting-text reply_comment" style="display:none">
     <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Reply</h3>
+    {{ node.id }}
 
     <form action="." method="post">
     {% csrf_token %}
-    <input type="text" value="{{ node.id }}" name="replyform.parent.name" hidden>
+    <input type="text" id="comment_id" name="replyform.parent.name" value="comment_id" hidden>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input class="mdl-textfield__input" type="text" id="id_{{ replyform.author.name }}" name="{{ replyform.author.name }}" value="{% if replyform.author.value != None %}{{ replyform.author.value }}{% endif %}">
         <label class="mdl-textfield__label" for="id_{{ replyform.author.name }}">Name</label>
@@ -131,13 +132,13 @@
         $("#add").hide();
     });
 
-    $(".reply_c").click(function() {
-        $(".reply_comment").show();
-        $("#add").hide();
-        $("#add_comment").hide();
-        $(this).children().show();
-
-    });
+$(".reply_c").click(function() {
+    $(".reply_comment").show();
+    $("#add").hide();
+    $("#add_comment").hide();
+    var cid = $(this).closest("li").attr("c_id");
+    $("input#comment_id").val(cid);
+});
 
 </script>
 <style>

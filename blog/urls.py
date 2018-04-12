@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'index$', views.index, name='index'),
     url(r'^$', views.index, name='index'),
     url(r'article/(?P<id>\d+)/$', views.detail, name='detail'),
+    url(r'category/(?P<id>\d+)/$', views.category, name='category'),
     url(r'search$', views.search, name='search'),
     url(r'intro$', views.intro, name='intro'),
     url(r'archives$', views.archives, name='archives'),

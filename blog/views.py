@@ -10,7 +10,8 @@ from django.http import Http404
 def index(request):
 	return_result = {}
 	f = SearchForm()
-	return_result.update({'form': f})
+	category = Category.objects.all()
+	return_result.update({'form': f, 'category': category})
 	try:
 		post = Article.objects.all()
 		return_result.update({'result': post})
@@ -46,7 +47,8 @@ def detail(request, id):
 						content = r_f.cleaned_data['content']
 						email = r_f.cleaned_data['email']
 						parent = r_f.cleaned_data['parent']
-						Comment.objects.create(content=content, author=author, article_id=id, parent_id=parent)
+						print (parent)
+						Comment.objects.create(content=content, author=author, article_id=id, parent_id=parent, email=email)
 						r_f = ReplyForm()
 						return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments, 'replyform': r_f})
 			else:
@@ -95,3 +97,8 @@ def archives(request):
 		
 	return render(request, 'blog/archives.html', {'a': a})
 
+def category(request, id):
+	category = Category.objects.get(id=id)
+	articles = Article.objects.filter(category_id=id)
+	print(articles)
+	return render(request, 'blog/category.html', {'category': category, 'articles': articles})
