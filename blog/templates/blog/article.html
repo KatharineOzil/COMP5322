@@ -102,7 +102,7 @@
 
     <form action="." method="post">
     {% csrf_token %}
-    <input type="text" id="comment_id" name="replyform.parent.name" value="comment_id" hidden>
+    <input type="text" id="comment_id" name="{{ replyform.parent.name }}" value="" hidden>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input class="mdl-textfield__input" type="text" id="id_{{ replyform.author.name }}" name="{{ replyform.author.name }}" value="{% if replyform.author.value != None %}{{ replyform.author.value }}{% endif %}">
         <label class="mdl-textfield__label" for="id_{{ replyform.author.name }}">Name</label>

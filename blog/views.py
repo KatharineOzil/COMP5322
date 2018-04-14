@@ -32,6 +32,7 @@ def detail(request, id):
 			elif request.method == 'POST':
 				if 'comment' in request.POST:
 					f = CommentForm(request.POST)
+					r_f = ReplyForm()
 					if f.is_valid():
 						author = f.cleaned_data['author']
 						content = f.cleaned_data['content']
@@ -47,7 +48,6 @@ def detail(request, id):
 						content = r_f.cleaned_data['content']
 						email = r_f.cleaned_data['email']
 						parent = r_f.cleaned_data['parent']
-						print (parent)
 						Comment.objects.create(content=content, author=author, article_id=id, parent_id=parent, email=email)
 						r_f = ReplyForm()
 						return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments, 'replyform': r_f})
@@ -94,8 +94,10 @@ def archives(request):
 
 	for c in articles:
 		a[c.category.category].append(c)
+
+	category = Category.objects.all()
 		
-	return render(request, 'blog/archives.html', {'a': a})
+	return render(request, 'blog/archives.html', {'a': a, 'category': category})
 
 def category(request, id):
 	category = Category.objects.get(id=id)

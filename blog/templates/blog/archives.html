@@ -1,38 +1,40 @@
+
+
 {% extends 'blog/base.html' %}
 {% load staticfiles %}
     {% block content %}
 
 <main class="mdl-layout__content">
-	<div class="mdl-grid portfolio-max-width">
-		<div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
-        <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">Archives</h2>
-        </div>
-        <div class="mdl-card__media">
-            <img class="article-image" src='{% static "/image/aboutus.png" %}' border="0" alt="">
-        </div>
-        <br>
+    <div class="mdl-grid portfolio-max-width">
         {% if a %}
-        <div class="mdl-grid portfolio-copy">
-        	{% for k,v in a.items %}
-        		{% if v %}
-        		<div class="mdl-cell mdl-cell--12-col mdl-typography--headline"><h3>{{ k }}</h3></div>
-        		{% for i in v %}
-            <h4 class="mdl-cell mdl-cell--12-col mdl-typography--headline">	
-            	<a href="{% url "detail" id=i.id %}">{{i.title}}</a></h4>
-            <div class="mdl-cell mdl-cell--8-col mdl-card__supporting-text no-padding ">
-            <p>	{{ i.author }} | {{ i.created_time }}</p>
-			</div>
-				{% endfor %}
-				{% endif %}
-				{% endfor %}
-		{% else %}
-		<h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">	
-            	No Article!</h3>
-		</div>
-    	{% endif %}
-</div>
-</div>
+            {% for k,v in a.items %}
+                {% if v %}
+                    <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                        {% for c in category %}
+                            {% if c.category == k %}
+                            <div class="mdl-card__media">
+                                <img class="article-image" src='/{{ c.cover }}' border="0" alt="">
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="mdl-card__title">
+                            <h2>{{ k }}</h2>
+                        </div>
+                        {% for i in v %}
+                            <h4 class="mdl-cell mdl-cell--12-col mdl-typography--headline">
+                                <a href=" "detail" id=i.id %}">{{i.title}}</a >
+                            </h4>
+                            <div class="mdl-cell mdl-cell--8-col mdl-card__supporting-text no-padding ">
+                                <p> {{ i.author }} | {{ i.created_time }}</p >
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">No Article!</h3>
+        {% endif %}
+    </div>
 </main>
 
     {% endblock %}
