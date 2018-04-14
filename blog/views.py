@@ -13,7 +13,7 @@ def index(request):
 	category = Category.objects.all()
 	return_result.update({'form': f, 'category': category})
 	try:
-		post = Article.objects.all()
+		post = Article.objects.all().order_by('-created_time')
 		return_result.update({'result': post})
 	except Article.DoesNotExist:
 		return_result.update({'result': 'No Result!'})
@@ -23,7 +23,7 @@ def detail(request, id):
 	try:
 		post = Article.objects.get(id=id)
 		if post.visible == True:
-			comments = post.comment_set.all()
+			comments = post.comment_set.filter(status=True)
 			#comments = Comment.objects.filter(article_id=id, status=True)
 			if request.method == 'GET':
 				f = CommentForm()
@@ -88,7 +88,7 @@ def intro(request):
 
 def archives(request):
 	a = {}
-	articles = Article.objects.all()
+	articles = Article.objects.all().order_by('-created_time')
 	for c in articles:
 		a[c.category.category] = []
 
