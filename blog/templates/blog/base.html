@@ -1,12 +1,11 @@
 {% load staticfiles %}
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A portfolio template that uses Material Design Lite.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>S.W.Y</title>
+    <title>S.W.Y.</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.grey-pink.min.css" />
     <link rel="stylesheet" href='{% static "/mdl/styles.css" %}' />
@@ -29,7 +28,7 @@
                     <a class="mdl-navigation__link  {% if request.path == '/index' or request.path == '/' %}is-active{% endif %}" href={% url 'index' %}>Home</a >
                     <a class="mdl-navigation__link {% if request.path == '/archives' or '/article' in request.path %}is-active{% endif %}" href={% url 'archives' %}>Archives</a>
                     <a class="mdl-navigation__link {% if request.path == '/intro' %}is-active{% endif %}" href={% url 'intro' %}>About Us</a >
-                    <a class="mdl-navigation__link {% if request.path == '/admin' %}is-active{% endif %}" href="admin">Admin</a >
+                    <a class="mdl-navigation__link {% if request.path == '/admin' %}is-active{% endif %}" href="admin" target="_blank">Admin</a >
 
                 </nav>
             </div>
@@ -40,22 +39,22 @@
                 <a class="mdl-navigation__link {% if request.path == '/index' or request.path == '/' %}is-active{% endif %}" href={% url 'index' %}>Home</a>
                 <a class="mdl-navigation__link {% if request.path == '/archives' or '/article' in request.path %}is-active{% endif %}" href={% url 'archives' %}>Archives</a>
                 <a class="mdl-navigation__link {% if request.path == '/intro' %}is-active{% endif %}" href={% url 'intro' %}>About Us</a>
-                <a class="mdl-navigation__link {% if request.path == '/admin' %}is-active{% endif %}" href="admin">Admin</a>
+                <a class="mdl-navigation__link {% if request.path == '/admin' %}is-active{% endif %}" href="admin" target="_blank">Admin</a>
             </nav>
         </div>
+
             {% block content %}
 
             {% endblock %}
 
-
     <footer class="mdl-mini-footer">
         <div class="mdl-mini-footer__left-section">
-            <div class="mdl-logo">Polyu Hot Links</div>
+            <div class="mdl-logo">S.W.Y. Website</div>
         </div>
         <div class="mdl-mini-footer__right-section">
             <ul class="mdl-mini-footer__link-list">
-                <li><a href="https://my.polyu.edu.hk/">My Polyu</a></li>
-                <li><a href="https://www38.polyu.edu.hk/eStudent/">eStudent</a></li>
+                <li><a href="https://my.polyu.edu.hk/" target="_blank">My Polyu</a></li>
+                <li><a href="https://www38.polyu.edu.hk/eStudent/" target="_blank">eStudent</a></li>
             </ul>
         </div>
     </footer>

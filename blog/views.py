@@ -13,7 +13,7 @@ def index(request):
 	category = Category.objects.all()
 	return_result.update({'form': f, 'category': category})
 	try:
-		post = Article.objects.all().order_by('-created_time')
+		post = Article.objects.all().order_by('-created_time')[0: 10]
 		return_result.update({'result': post})
 	except Article.DoesNotExist:
 		return_result.update({'result': 'No Result!'})
@@ -24,7 +24,6 @@ def detail(request, id):
 		post = Article.objects.get(id=id)
 		if post.visible == True:
 			comments = post.comment_set.filter(status=True)
-			#comments = Comment.objects.filter(article_id=id, status=True)
 			if request.method == 'GET':
 				f = CommentForm()
 				r_f = ReplyForm()
@@ -48,7 +47,7 @@ def detail(request, id):
 						content = r_f.cleaned_data['content']
 						email = r_f.cleaned_data['email']
 						parent = r_f.cleaned_data['parent']
-						Comment.objects.create(content=content, author=author, article_id=id, parent_id=parent, email=email)
+						Comment.objects.create(content=content, author=author, article_id=id, parent_id=parent.id, email=email)
 						r_f = ReplyForm()
 						return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments, 'replyform': r_f})
 			else:
@@ -76,8 +75,19 @@ def search(request):
 			return_article = Article.objects.filter( Q(title__contains=search) | Q(content__contains=search))
 			return_result.update({'form': f, 'result': return_article})
 			return render(request, 'blog/search.html',return_result)
-		else:
-			return render(request, 'blog/index.html', {'form': f})
+	else:
+			return_result = {}
+			f = SearchForm(request.POST)
+			category = Category.objects.all()
+			return_result.update({'form': f, 'category': category})
+			try:
+				post = Article.objects.all().order_by('-created_time')[0: 11]
+				return_result.update({'result': post})
+			except Article.DoesNotExist:
+				return_result.update({'result': 'No Result!'})
+			return render(request, 'blog/index.html', return_result)
+
+	return render(request, 'blog/search.html', return_result)
 
 def intro(request):
 	try:
@@ -96,11 +106,10 @@ def archives(request):
 		a[c.category.category].append(c)
 
 	category = Category.objects.all()
-		
+
 	return render(request, 'blog/archives.html', {'a': a, 'category': category})
 
 def category(request, id):
 	category = Category.objects.get(id=id)
 	articles = Article.objects.filter(category_id=id)
-	print(articles)
 	return render(request, 'blog/category.html', {'category': category, 'articles': articles})

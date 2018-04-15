@@ -40,7 +40,7 @@ class Comment(MPTTModel):
 	article = models.ForeignKey(Article, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.author
+		return self.content
 
 	class MPTTMeta:
 		order_insertion_by = ['-created_time']

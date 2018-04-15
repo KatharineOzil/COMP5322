@@ -1,37 +1,38 @@
 {% extends 'blog/base.html' %}
 {% load staticfiles %}
-    {% block content %}
+{% block content %}
 
 <main class="mdl-layout__content">
-	<div class="mdl-grid portfolio-max-width">
-		<div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
-        <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">{{ category.category }}</h2>
-        </div>
-        <div class="mdl-card__media">
-            <img class="article-image" src='/{{ category.cover }}' border="0" alt="">
-        </div>
-
-        
-        <div class="mdl-grid portfolio-copy">
-            {% if articles %}
-
-        	{% for article in articles %}
-
-            <h4 class="mdl-cell mdl-cell--12-col mdl-typography--headline">    
-                <a href="{% url "detail" id=article.id %}">{{ article.title }}</a></h4>
-            <div class="mdl-cell mdl-cell--8-col mdl-card__supporting-text no-padding ">
-            <p> {{ article.author }} | {{ article.created_time }}</p>
+    <div class="mdl-grid portfolio-max-width">
+        <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">Category: {{ category.category }}</h2>
             </div>
-			{% endfor %}
-            {% else %}
-            <h4 class="mdl-cell mdl-cell--12-col mdl-typography--headline">    
+            <div class="mdl-card__media">
+                <img class="article-image" src='/{{ category.cover }}' border="0" alt="">
+            </div>
+        </div>           
+        {% if articles %}
+            {% for article in articles %}
+                <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card"> 
+                    <div class="mdl-card__media">
+                        <a href="{% url "detail" id=article.id %}">
+                            <img class="article-image" src='/{{ article.cover }}' border="0" alt="">
+                        </a>
+                    </div>          
+                    <h4 class="mdl-cell mdl-cell--12-col mdl-typography--headline">
+                        <a href="{% url "detail" id=article.id %}">{{ article.title }}</a>
+                    </h4>
+                    <div class="mdl-cell mdl-cell--12-col mdl-card__supporting-text no-padding ">
+                        <p>{{ article.author }} | {{ article.created_time }}</p>
+                    </div>                    
+                </div>
+            {% endfor %}
+        {% else %}
+            <h4 class="mdl-cell mdl-cell--12-col mdl-typography--headline">
                 No Article!
             </h4>
-            {% endif %}
-		</div>
-    
-</div>
-</div>
+        {% endif %}
+    </div>
 </main>
-    {% endblock %}	
+{% endblock %}

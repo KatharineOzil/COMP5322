@@ -1,8 +1,6 @@
-
-
 {% extends 'blog/base.html' %}
 {% load staticfiles %}
-    {% block content %}
+{% block content %}
 
 <main class="mdl-layout__content">
     <div class="mdl-grid portfolio-max-width">
@@ -13,18 +11,20 @@
                         {% for c in category %}
                             {% if c.category == k %}
                             <div class="mdl-card__media">
-                                <img class="article-image" src='/{{ c.cover }}' border="0" alt="">
+                                <a class="archive category" href="/category/{{ c.id }}">
+                                    <img class="article-image" src='/{{ c.cover }}' border="0" alt="">
+                                </a>
                             </div>
+                        <div class="mdl-card__title">
+                            <h3><a class="archive category" href="/category/{{ c.id }}">{{ k }}</a></h3>
+                        </div>
                             {% endif %}
                         {% endfor %}
-                        <div class="mdl-card__title">
-                            <h2>{{ k }}</h2>
-                        </div>
                         {% for i in v %}
                             <h4 class="mdl-cell mdl-cell--12-col mdl-typography--headline">
-                                <a href=" "detail" id=i.id %}">{{i.title}}</a >
+                                <a href="/article/{{ i.id }}">{{i.title}}</a>
                             </h4>
-                            <div class="mdl-cell mdl-cell--8-col mdl-card__supporting-text no-padding ">
+                            <div class="mdl-cell mdl-cell--12-col mdl-card__supporting-text no-padding ">
                                 <p> {{ i.author }} | {{ i.created_time }}</p >
                             </div>
                         {% endfor %}
@@ -36,5 +36,4 @@
         {% endif %}
     </div>
 </main>
-
-    {% endblock %}
+{% endblock %}
