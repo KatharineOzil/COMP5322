@@ -72,7 +72,7 @@ def search(request):
 		f = SearchForm(request.POST)
 		if f.is_valid():
 			search = f.cleaned_data['search']
-			return_article = Article.objects.filter( Q(title__contains=search) | Q(content__contains=search))
+			return_article = Article.objects.filter( Q(title__contains=search) | Q(content__contains=search)).order_by('-created_time')
 			return_result.update({'form': f, 'result': return_article})
 			return render(request, 'blog/search.html',return_result)
 	else:
@@ -111,5 +111,5 @@ def archives(request):
 
 def category(request, id):
 	category = Category.objects.get(id=id)
-	articles = Article.objects.filter(category_id=id)
+	articles = Article.objects.filter(category_id=id).order_by('-created_time')
 	return render(request, 'blog/category.html', {'category': category, 'articles': articles})
