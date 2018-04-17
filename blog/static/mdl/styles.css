@@ -168,3 +168,42 @@ footer {
   background-size: cover;
 }
 
+.searchForm {
+  padding: 10px;
+}
+
+.searchForm input[name=search] {
+  border-radius: 5px;
+  border-color: rgba(0, 0, 0, 0.08);
+  height: 37px;
+  vertical-align: top;
+  padding: 0 10px;
+}
+
+.searchForm .mdl-button:hover {
+  background: rgba(158,158,158,.4);
+}
+
+a.category {
+  color: darkblue;
+}
+
+a.category:hover {
+  color: grey;
+}
+
+a:hover {
+  color: purple;
+}
+
+a.archive {
+  text-decoration: none;
+}
+
+.mdl-card__media {
+  background-color: white;
+}
+
+a > img:hover {
+  opacity: 0.3;
+}
