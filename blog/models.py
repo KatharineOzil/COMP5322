@@ -6,7 +6,10 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
+import sys
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # Create your models here.
 
