@@ -72,7 +72,7 @@ def search(request):
 		f = SearchForm(request.POST)
 		if f.is_valid():
 			search = f.cleaned_data['search']
-			return_article = Article.objects.filter( Q(title__contains=search) | Q(content__contains=search)).order_by('-created_time')
+			return_article = Article.objects.filter( Q(title__contains=search) | Q(content__contains=search) | Q(category__category__icontains=search)).order_by('-created_time')
 			return_result.update({'form': f, 'result': return_article})
 			return render(request, 'blog/search.html',return_result)
 	else:
