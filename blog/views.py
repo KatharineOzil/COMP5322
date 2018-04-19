@@ -13,7 +13,7 @@ def index(request):
 	category = Category.objects.all()
 	return_result.update({'form': f, 'category': category})
 	try:
-		post = Article.objects.all().order_by('-created_time')[0: 10]
+		post = Article.objects.filter(visible=True).order_by('-created_time')[0: 10]
 		return_result.update({'result': post})
 	except Article.DoesNotExist:
 		return_result.update({'result': 'No Result!'})
@@ -72,16 +72,16 @@ def search(request):
 		f = SearchForm(request.POST)
 		if f.is_valid():
 			search = f.cleaned_data['search']
-			return_article = Article.objects.filter( Q(title__contains=search) | Q(content__contains=search) | Q(category__category__icontains=search)).order_by('-created_time')
+			return_article = Article.objects.filter(Q(title__contains=search) | Q(content__contains=search) | Q(category__category__icontains=search)).filter(visible=True).order_by('-created_time')
 			return_result.update({'form': f, 'result': return_article})
 			return render(request, 'blog/search.html',return_result)
-	else:
+		else:
 			return_result = {}
 			f = SearchForm(request.POST)
 			category = Category.objects.all()
 			return_result.update({'form': f, 'category': category})
 			try:
-				post = Article.objects.all().order_by('-created_time')[0: 11]
+				post = Article.objects.filter(visible=True).order_by('-created_time')[0: 11]
 				return_result.update({'result': post})
 			except Article.DoesNotExist:
 				return_result.update({'result': 'No Result!'})
