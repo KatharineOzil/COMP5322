@@ -11,6 +11,7 @@
                 <img class="article-image" src='{% static "/image/aboutus.jpeg" %}' border="0" alt="">
             </div>
             <div class="mdl-grid portfolio-copy">
+                {% if users %}
                 {% for user in users %}
                     <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">
                         {{ user.username }}
@@ -22,6 +23,11 @@
                         <p>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
                     </div>                    
                 {% endfor %}
+                {% else %}
+                    <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">
+                        No Result!
+                    </h3>
+                {% endif %}
             </div>
         </div>
     </div>

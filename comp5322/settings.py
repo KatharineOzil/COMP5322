@@ -126,3 +126,5 @@ AUTH_USER_MODEL = 'blog.User'
 STATIC_URL = '/blog/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+handler404 = 'blog.views.page_not_found'
+handler500 = 'blog.views.page_error'

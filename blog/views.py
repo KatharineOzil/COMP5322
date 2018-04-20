@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from .models import Article, Comment, Category, User
 from .forms import CommentForm, SearchForm, ReplyForm
 from itertools import chain
@@ -55,10 +55,10 @@ def detail(request, id):
 				r_f = ReplyForm()
 				return render(request, 'blog/article.html', {'form': f, 'post': post, 'comments': comments, 'replyform': r_f})
 		else:
-			raise Http404("Article does not exist")
+			return render_to_response('blog/404.html', {})
 
 	except Article.DoesNotExist:
-		raise Http404("Article does not exist")
+		return render_to_response('blog/404.html', {})
 
 	return render(request, 'blog/article.html', {'post': post, 'comments': comments, 'form': f})
 
@@ -113,3 +113,13 @@ def category(request, id):
 	category = Category.objects.get(id=id)
 	articles = Article.objects.filter(visible=True, category_id=id).order_by('-created_time')
 	return render(request, 'blog/category.html', {'category': category, 'articles': articles})
+
+def page_not_found(request):
+	response = render_to_response('blog/404.html', {})
+	response.status_code = 404
+	return response
+
+def page_error(request):
+	response = render_to_response('blog/500.html', {})
+	response.status_code = 404
+	return response

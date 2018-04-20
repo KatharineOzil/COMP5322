@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'archives$', views.archives, name='archives'),
     url(r'', include(frontend_urls)),
     url(r'admin/', include(admin.site.urls)),
+    url(r'404$', views.page_not_found, name='404'),
+    url(r'500$', views.page_error, name='500'),
 ] 
