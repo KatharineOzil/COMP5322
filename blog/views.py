@@ -98,7 +98,7 @@ def intro(request):
 
 def archives(request):
 	a = {}
-	articles = Article.objects.all().order_by('-created_time')
+	articles = Article.objects.filter(visible=True).order_by('-created_time')
 	for c in articles:
 		a[c.category.category] = []
 
@@ -111,5 +111,5 @@ def archives(request):
 
 def category(request, id):
 	category = Category.objects.get(id=id)
-	articles = Article.objects.filter(category_id=id).order_by('-created_time')
+	articles = Article.objects.filter(visible=True, category_id=id).order_by('-created_time')
 	return render(request, 'blog/category.html', {'category': category, 'articles': articles})
