@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'tpo)7bsfydv@-77bgq4c%$)fl*wfe@#$yhd2a!0f_vky@$=4r+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -125,6 +125,3 @@ AUTH_USER_MODEL = 'blog.User'
 
 STATIC_URL = '/blog/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-handler404 = 'blog.views.page_not_found'
-handler500 = 'blog.views.page_error'

@@ -36,15 +36,15 @@
                                     </span>
                                 </span>
                 
-                {% if node.parent == NULL %}
-                            <span class="mdl-list__item-secondary-content">
-                            <button type="button" class="mdl-button mdl-js-button mdl-button--primary reply_c"> 
-                                    Reply
-                            </button>
-                            </span>
-                        {% endif %}
+                                {% if node.parent == NULL %}
+                                    <span class="mdl-list__item-secondary-content">
+                                        <button type="button" class="mdl-button mdl-js-button mdl-button--primary reply_c"> 
+                                            Reply
+                                        </button>
+                                    </span>
+                                {% endif %}
                                 
-                {% if not node.is_leaf_node %}
+                                {% if not node.is_leaf_node %}
                                     <li><ul>{{ children }}</ul></li>
                                 {% endif %}
                             </li>
@@ -86,7 +86,7 @@
                     </form>
                 </div>
 
-                <div class="mdl-card__supporting-text reply_comment" style="display:none">
+                <div class="mdl-card__supporting-text reply_comment" style="display:none" id="reply_comment">
                     <h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Reply</h3>
                     {{ node.id }}
                     <form action="." method="post">
@@ -157,6 +157,17 @@
             return false;
         }
         return true;
+    }
+
+    function cancelAddcomment(){
+         $("#add_comment").hide();
+         $("#add").show();
+
+    }
+    function cancelReply(){
+         $("#reply_comment").hide();
+         $("#reply_c").show();
+         $("#add").show();
     }
 </script>
 {% endblock %}

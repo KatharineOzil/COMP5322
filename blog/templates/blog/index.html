@@ -1,20 +1,20 @@
 {% extends 'blog/base.html' %}
 {% load staticfiles %}
-    {% block content %}
+{% block content %}
 <main class="mdl-layout__content">
     <center>
         <div class='searchForm'>
             <form action="{% url 'search' %}" method="post">
                 {% csrf_token %}
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="id_{{ form.search.name }}" name="{{ form.search.name }}" value="{% if form.search.value != None %}{{ form.search.value }}{% endif %}" >
-                <label class="mdl-textfield__label" for="id_{{ form.search.name }}">Search</label>
-            </div>
-        <input type="submit" value="search" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" />
-                {% if form.errors  %}    
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="id_{{ form.search.name }}" name="{{ form.search.name }}" value="{% if form.search.value != None %}{{ form.search.value }}{% endif %}" >
+                    <label class="mdl-textfield__label" for="id_{{ form.search.name }}">Search</label>
+                </div>
+                <input type="submit" value="search" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" />
+                {% if form.errors %}    
                     <script>alert("Please input the key word!");</script>
                 {% endif %}
-        </form>
+            </form>
         </div>
     </center>
     <div class="mdl-grid portfolio-max-width">
@@ -55,7 +55,7 @@
                     else document.write('<div class="mdl-card__supporting-text padding-top">');
                     </script>
                     <span>Posted by {{content.author}}, {{content.created_time}}</span>
-                    <h6>Category: <a class="category" href="/category/{{ content.category.id }}" %}">{{ content.category }}</a></h6>
+                    <h6>Category: <a class="category" href="/category/{{ content.category.id }}">{{ content.category }}</a></h6>
                 <script>
                 document.write('</div></div></div>');
                 cnt++;
@@ -67,13 +67,13 @@
     {% endif %}
     <center>
         <form action="{% url 'search' %}" method="post">
-        {% csrf_token %}
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="id_{{ form.search.name }}" name="{{ form.search.name }}" value="{% if form.search.value != None %}{{ form.search.value }}{% endif %}" >
-            <label class="mdl-textfield__label" for="id_{{ form.search.name }}">Search</label>
-        </div>  
-        <input type="submit" value="search" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" />
-    </form>
+            {% csrf_token %}
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="id_{{ form.search.name }}" name="{{ form.search.name }}" value="{% if form.search.value != None %}{{ form.search.value }}{% endif %}" >
+                <label class="mdl-textfield__label" for="id_{{ form.search.name }}">Search</label>
+            </div>  
+            <input type="submit" value="search" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" />
+        </form>
     </center>
 </main>
 {% endblock %}            
