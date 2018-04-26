@@ -1,32 +1,45 @@
 {% extends 'blog/base.html' %}
 {% load staticfiles %}
-    {% block content %}
-
+{% block content %}
 <main class="mdl-layout__content">
+    <center>
+        <div class='searchForm'>
+            <form action="{% url 'search' %}" method="post">
+                {% csrf_token %}
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="id_{{ form.search.name }}" name="{{ form.search.name }}" value="{% if form.search.value != None %}{{ form.search.value }}{% endif %}" >
+                    <label class="mdl-textfield__label" for="id_{{ form.search.name }}">Search</label>
+                </div>
+                <input type="submit" value="search" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" />
+                {% if form.errors  %}
+                    <script>alert("Please input the key word!");</script>
+                {% endif %}
+            </form>
+        </div>
+    </center>
     <div class="mdl-grid portfolio-max-width">
-    <div class="mdl-grid mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-card mdl-shadow--4dp">
-        <div>
-        {% if result %}
-        <script>var cnt = 1;</script>
-        {% for content in result %}
+        <h4>Latest Articles</h4>
+    </div>
+    {% if result %}
+        <div class="mdl-grid portfolio-max-width">
+            <script>var cnt = 1;</script>
+            {% for content in result %}
                 <script>
                 if (cnt%4 == 1) {
                     document.write('<div class="mdl-grid mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-card mdl-shadow--4dp">');
                     document.write('    <div class="mdl-card__media mdl-cell mdl-cell--12-col-tablet">');
-                } else if (cnt%4 == 2) {
+                } else if (cnt%4 == 2 || cnt%4 == 3) {
                     document.write('<div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-card mdl-shadow--4dp">');
                     document.write('    <div class="mdl-card__media">');
-                } else if (cnt%4 == 3 ) {
-                    document.write('<div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-card mdl-shadow--4dp">');
-                    document.write('<div class="mdl-card__media">');
-                }  else {
+                } else {
                     document.write('<div class="mdl-grid mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-card mdl-shadow--4dp">');
                     document.write('<div class="mdl-card__media mdl-cell mdl-cell--12-col-tablet">');
                 }
                 </script>
-                    <a href="{% url "detail" id=content.id %}"><img class="article-image" src="{{content.cover}}" border="0" alt=""></a>
-        </div>            
-                 <script>
+                    <a href="{% url "detail" id=content.id %}">
+                        <img class="article-image" src="{{content.cover}}" border="0" alt="">
+                    </a>
+                <script>
                 document.write('</div>');
                 if (cnt%4 == 1) document.write('<div class="mdl-cell mdl-cell--8-col">');
                 else if (cnt%4 == 2) document.write('<div class="mdl-card__title">');
@@ -36,43 +49,31 @@
                     <a href="{% url "detail" id=content.id %}">
                         <h2 class="mdl-card__title-text">{{content.title}}</h2>
                     </a>
-                 <script>
-                    document.write('</div>');
+                    <script>
                     if (cnt%4 == 1) document.write('<div class="mdl-card__supporting-text padding-top">');
                     else if (cnt%4 == 2) document.write('<div class="mdl-card__supporting-text no-bottom-padding">');
-                    else if (cnt%4 == 2) document.write('<div class="mdl-card__supporting-text">');
                     else document.write('<div class="mdl-card__supporting-text padding-top">');
-
-                 </script>
-                        <span>{{content.author}} {{content.created_time}}</span>
-                        <span>Category: {{ content.category }}</span>
-                 <script>
-                     document.write('</div>');
-                     document.write('</div>');
+                    </script>
+                    <span>Posted by {{content.author}}, {{content.created_time}}</span>
+                    <h6>Category: <a class="category" href="/category/{{ content.category.id }}">{{ content.category }}</a></h6>
+                <script>
+                document.write('</div></div></div>');
+                cnt++;
                 </script>
-         
-        {% endfor %}
-        {% else %}
+            {% endfor %}
+        </div>
+    {% else %}
         <div>No Articles!</div>
-        {% endif %}
-    </div>
-</div>
-</main>
+    {% endif %}
     <center>
-    <div id='search'>
-      {% if form.subject.errors %}
-      <ol>
-        {% for error in form.subject.errors %}
-          <li><strong>{{ error|escape }}</strong></li>
-        {% endfor %}
-      </ol>
-      {% endif %}
-      <form action="{% url 'search' %}" method="post">
-        {% csrf_token %}
-        {{ form }}  
-        <input type="submit" value="search" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"/>
-      </form>
-    </div>
+        <form action="{% url 'search' %}" method="post">
+            {% csrf_token %}
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="id_{{ form.search.name }}" name="{{ form.search.name }}" value="{% if form.search.value != None %}{{ form.search.value }}{% endif %}" >
+                <label class="mdl-textfield__label" for="id_{{ form.search.name }}">Search</label>
+            </div>
+            <input type="submit" value="search" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" />
+        </form>
     </center>
-
-    {% endblock %}
+</main>
+{% endblock %} 

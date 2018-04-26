@@ -7,7 +7,7 @@ class CommentForm(forms.ModelForm):
 		fields = ['content', 'author', 'email']
 
 class SearchForm(forms.Form):
-	search = forms.CharField(max_length=200)
+	search = forms.CharField(max_length=200, required=True)
 
 class ReplyForm(forms.ModelForm):
 	class Meta:
