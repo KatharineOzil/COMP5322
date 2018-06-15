@@ -7,10 +7,6 @@ from django.contrib.auth.models import AbstractUser
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
 # Create your models here.
 
 class Category(models.Model):
@@ -38,7 +34,8 @@ class Comment(MPTTModel):
 	author = models.CharField(max_length=100)
 	email = models.EmailField(blank=True)
 	created_time = models.DateTimeField(default=timezone.now)
-	parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
+	parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True,
+            on_delete=models.CASCADE)
 	status = models.BooleanField(default=True)
 	article = models.ForeignKey(Article, on_delete=models.CASCADE)
 

@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'intro$', views.intro, name='intro'),
     url(r'archives$', views.archives, name='archives'),
     url(r'', include(frontend_urls)),
-    url(r'admin/', include(admin.site.urls)),
+    url(r'admin/', admin.site.urls),
     url(r'404$', views.page_not_found, name='404'),
     url(r'500$', views.page_error, name='500'),
 #    url(r'^static/(?P<path>.*)$', serve, {"document_root": settings.STATIC_ROOT}),
